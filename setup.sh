@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-openssl rand -base64 741 > ./keys/key.txt
-kubectl create secret generic shared-bootstrap-data --from-file=internal-auth-mongodb-keyfile=./keys/key.txt
+#openssl rand -base64 741 > key.txt
+envsubst < ${WORKSPACE}/key.txt | kubectl create secret generic shared-bootstrap-data --from-file=internal-auth-mongodb-keyfile=-
 
-kubectl apply -f deploy.yml
+envsubst < ${WORKSPACE}/key.txt | kubectl apply -f -
 
 kubectl exec -it mongod-0 -c mongod-container bash
 
