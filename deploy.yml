@@ -33,46 +33,47 @@ spec:
     spec:
       containers:
       - name: mongod-container
-        image: mongo:3.4
-        command:
-        - "numactl"
-        - "--interleave=all"
-        - "mongod"
-        - "--bind_ip"
-        - "0.0.0.0"
-        - "--replSet"
-        - "MainRepSet"
-        - "--auth"
-        - "--clusterAuthMode"
-        - "keyFile"
-        - "--keyFile"
-        - "/etc/secrets-volume/internal-auth-mongodb-keyfile"
-        - "--setParameter"
-        - "authenticationMechanisms=SCRAM-SHA-1"
+        image: mongo-for-replica:latest
+#        mongo:3.4
+#        command:
+#        - "numactl"
+#        - "--interleave=all"
+#        - "mongod"
+#        - "--bind_ip"
+#        - "0.0.0.0"
+#        - "--replSet"
+#        - "MainRepSet"
+#        - "--auth"
+#        - "--clusterAuthMode"
+#        - "keyFile"
+#        - "--keyFile"
+#        - "/etc/secrets-volume/internal-auth-mongodb-keyfile"
+#        - "--setParameter"
+#        - "authenticationMechanisms=SCRAM-SHA-1"
         resources:
           requests:
             cpu: 0.2
             memory: 200Mi
         ports:
         - containerPort: 27017
-        volumeMounts:
-        - name: secrets-volume
-          readOnly: true
-          mountPath: /etc/secrets-volume
-        - name: mongodb-persistent-storage-claim
-          mountPath: /data/db
-      volumes:
-      - name: secrets-volume
-        secret:
-          secretName: shared-bootstrap-data
-          defaultMode: 256
-  volumeClaimTemplates:
-  - metadata:
-      name: mongodb-persistent-storage-claim
-      annotations:
-        volume.beta.kubernetes.io/storage-class: "standard"
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi
+#        volumeMounts:
+#        - name: secrets-volume
+#          readOnly: true
+#          mountPath: /etc/secrets-volume
+#        - name: mongodb-persistent-storage-claim
+#          mountPath: /data/db
+#      volumes:
+#      - name: secrets-volume
+#        secret:
+#          secretName: shared-bootstrap-data
+#          defaultMode: 256
+#  volumeClaimTemplates:
+#  - metadata:
+#      name: mongodb-persistent-storage-claim
+#      annotations:
+#        volume.beta.kubernetes.io/storage-class: "standard"
+#    spec:
+#      accessModes: [ "ReadWriteOnce" ]
+#      resources:
+#        requests:
+#          storage: 1Gi
